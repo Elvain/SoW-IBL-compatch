@@ -1,0 +1,11 @@
+version="1.0"
+tags={
+	"Historical"
+	"Map"
+	"Culture"
+	"Warfare"
+	"Gameplay"
+	"Graphics"
+}
+name="IBL-SoW-compatch"
+supported_version="1.4.4"
