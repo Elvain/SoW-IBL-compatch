@@ -9,28 +9,24 @@ annualPulse = {
 	every_in_global_list = {
 		variable = $list$
     	change_variable = { name = county_weather_fertility_mult add = county_weather_fertility_mult_delta }
-        random_list = { 
-            100 = {
-            }
-            40 = {
-                change_variable = { name = county_weather_fertility_mult add = 0.01 }
-            }
-            40 = {
-                change_variable = { name = county_weather_fertility_mult add = -0.01 }
-            }
-            10 = {
-                change_variable = { name = county_weather_fertility_mult add = 0.02 }
-            }
-            10 = {
-                change_variable = { name = county_weather_fertility_mult add = -0.02 }
-            }
-    		1 = {
-                change_variable = { name = county_weather_fertility_mult add = 0.04 }
-            }
-    		1 = {
-                change_variable = { name = county_weather_fertility_mult add = -0.04 }
-            }
-        }
+        change_variable = { name = county_weather_fertility_mult add = { -0.04 0.04 } }
+    	if = {
+    		limit = { has_county_modifier = demd_drought }
+    		change_variable = { name = county_weather_fertility_mult add = drought_yearly_weather_modifier }
+    		random_list = {
+    			0 = { 
+    				modifier = {
+    					add = drought_end_chance
+    				}
+    				demd_end_drought = yes
+    			}
+    			0 = { 
+    				modifier = {
+    					add = drought_end_chance_neg
+    				}
+    			}
+    		}
+    	}	
     	every_in_list = { variable = county_provinces
     		limit = { combined_building_level > 0 }
             set_variable = { name = food_districts_max value = food_districts_max }
@@ -44,7 +40,7 @@ annualPulse = {
         	set_variable = {
         		name = knight_capacity_producers_max
         		value = {
-        			value = var:food_producers_max
+        			value = var:population
         			multiply = demd_farmer_to_noble_ratio
         		}		
         	}
@@ -173,12 +169,13 @@ annualPulse = {
             change_variable = { name = goods_stockpile subtract = var:goods_depreciation }
             change_variable = { name = goods_stockpile add = var:goods_imported }
         	set_variable = { name = capital_production_multiplier value = capital_production_multiplier }
+        	change_variable = { name = food_districts_count subtract = food_districts_to_remove } 
     	}
     	random_list = {
     		1 = {
     			trigger_event = { id = demd_pop_fire.1001 days = { 0 365 } }
     		}
-    		100 = {
+    		99 = {
     		}
     	}
     	if = {
@@ -186,30 +183,25 @@ annualPulse = {
     			OR = {
     				has_variable = isOnMinorRiver
     				has_variable = isOnMajorRiver
-    				is_coastal_county = yes
     			}
     		}
     		random_list = {
-    			1 = {
-    				trigger_event = { id = demd_pop_flood.1001 days = { 0 365 } }
+    			2 = {
+    				trigger_event = { id = demd_pop_flood.1001 days = { flood_months_lower flood_months_upper } }
     			}
-    			50 = {
+    			98 = {
     			}
     		}
     	}
     	if = { 
     		limit = {
-    			always = no 
     			has_variable = avalanche_eligible
     		}
     		random_list = {
     			2 = {
-    				trigger_event = { id = demd_pop_avalanche.1001 days = { 0 90 } }
+    				trigger_event = { id = demd_pop_avalanche.1001 months = { avalanche_months_lower avalanche_months_upper } }
     			}
-    			1 = {
-    				trigger_event = { id = demd_pop_avalanche.1001 days = { 330 365 } }
-    			}
-    			100 = {
+    			98 = {
     			}
     		}
     	}	
@@ -419,6 +411,7 @@ annualPulse = {
         change_variable = { name = goods_stockpile subtract = var:goods_depreciation }
         change_variable = { name = goods_stockpile add = var:goods_produced }
     	change_variable = { name = goods_stockpile add = trade_value_to_goods }
+    	change_variable = { name = goods_stockpile add = goods_produced_from_unused_construction_capacity }	
         set_variable = {
             name = goods_taxed
             value = {
@@ -438,6 +431,7 @@ annualPulse = {
     	set_variable = { name = county_districts_to_build value = county_districts_to_build }
     	set_variable = { name = county_unused_construction_capacity value = county_unused_construction_capacity }
         change_variable = { name = goods_districts_count add = county_districts_to_build }
+    	change_variable = { name = goods_districts_count subtract = goods_districts_to_remove } 
         if = {
     		limit = {
     			NOT = { has_county_modifier = plague_immunity }
@@ -509,6 +503,29 @@ annualPulse = {
         		demd_increment_manpower_rate = yes
         	}
     	}	
+    	if = { 
+    		limit = { has_variable = expansion_target }
+    		var:expansion_target = {
+    			change_variable = { name = holding_construction_progress add = yearly_holding_construction_progress }
+    			clamp_variable = { name = holding_construction_progress min = 0 max = holding_construction_progress_max }
+    			if = { 
+    				limit = { var:holding_construction_progress = { compare_value >= holding_construction_progress_max } }
+    				county = { 
+                    	random_county_province = {
+                    		limit = { 
+                    			has_variable = holding_construction_progress 
+                    			var:holding_construction_progress = { compare_value < holding_construction_progress_max }
+                    		}
+                    		county = { set_variable = { name = expansion_target value = prev } }
+                    	}
+    					if = { 
+    						limit = { var:expansion_target = prev }
+    						remove_variable = expansion_target
+    					}
+    				}			
+    			}
+    		}
+    	}
     	set_variable = { name = manpower_total_percent value = manpower_total_percent }
     	every_in_list = { 
     		variable = county_provinces
@@ -686,24 +703,27 @@ annualPulse = {
                 change_variable = { name = temp subtract = 0.1 }
             }
     	}
-    	set_variable = { name = temp value = development_progress_from_unused_construction_capacity }
-    	remove_all_county_modifier_instances = demd_prov_development_modifier_big
-    	remove_all_county_modifier_instances = demd_prov_development_modifier_medium
-    	remove_all_county_modifier_instances = demd_prov_development_modifier_small
-    	while = {
-    		limit = { var:temp > 1 }
-    		add_county_modifier = demd_prov_development_modifier_big 
-    		change_variable = { name = temp subtract = 1 }
-    	}
-    	while = {
-    		limit = { var:temp > 0.25 }
-    		add_county_modifier = demd_prov_development_modifier_medium 
-    		change_variable = { name = temp subtract = 0.25 }
-    	}
-    	while = {
-    		limit = { var:temp > 0.05 }
-    		add_county_modifier = demd_prov_development_modifier_small
-    		change_variable = { name = temp subtract = 0.05 }
+    	if = {
+    		limit = { development_level < 100 }
+    		set_variable = { name = temp value = development_progress_from_unused_construction_capacity }
+    		remove_all_county_modifier_instances = demd_prov_development_modifier_big
+    		remove_all_county_modifier_instances = demd_prov_development_modifier_medium
+    		remove_all_county_modifier_instances = demd_prov_development_modifier_small
+    		while = {
+    			limit = { var:temp > 1 }
+    			add_county_modifier = demd_prov_development_modifier_big 
+    			change_variable = { name = temp subtract = 1 }
+    		}
+    		while = {
+    			limit = { var:temp > 0.25 }
+    			add_county_modifier = demd_prov_development_modifier_medium 
+    			change_variable = { name = temp subtract = 0.25 }
+    		}
+    		while = {
+    			limit = { var:temp > 0.05 }
+    			add_county_modifier = demd_prov_development_modifier_small
+    			change_variable = { name = temp subtract = 0.05 }
+    		}
     	}
 	}
 }

@@ -6,8 +6,8 @@
 #############################################
 
 startupPulse = {
+	demd_set_ancestral_faiths = yes
 	every_province = {	
-		clear_buildings_from_holding = yes
 		reset_building_vars = yes
 		set_variable = { name = food_producers_max value = 0 }
 		set_variable = { name = food_taxed_to_gold value = 0 }
@@ -182,28 +182,24 @@ startupPulse = {
 			set_variable = { name = food_districts_count value = 1 }
 		}
     	change_variable = { name = county_weather_fertility_mult add = county_weather_fertility_mult_delta }
-        random_list = { 
-            100 = {
-            }
-            40 = {
-                change_variable = { name = county_weather_fertility_mult add = 0.01 }
-            }
-            40 = {
-                change_variable = { name = county_weather_fertility_mult add = -0.01 }
-            }
-            10 = {
-                change_variable = { name = county_weather_fertility_mult add = 0.02 }
-            }
-            10 = {
-                change_variable = { name = county_weather_fertility_mult add = -0.02 }
-            }
-    		1 = {
-                change_variable = { name = county_weather_fertility_mult add = 0.04 }
-            }
-    		1 = {
-                change_variable = { name = county_weather_fertility_mult add = -0.04 }
-            }
-        }
+        change_variable = { name = county_weather_fertility_mult add = { -0.04 0.04 } }
+    	if = {
+    		limit = { has_county_modifier = demd_drought }
+    		change_variable = { name = county_weather_fertility_mult add = drought_yearly_weather_modifier }
+    		random_list = {
+    			0 = { 
+    				modifier = {
+    					add = drought_end_chance
+    				}
+    				demd_end_drought = yes
+    			}
+    			0 = { 
+    				modifier = {
+    					add = drought_end_chance_neg
+    				}
+    			}
+    		}
+    	}	
 	}	
    every_province = {
 		set_variable = { name = capital_production_multiplier value = 0 }
@@ -288,6 +284,19 @@ startupPulse = {
 		}
 		set_variable = { name = county_population value = county_population }
 		set_variable = { name = public_order value = 0.5 }
+	}
+	every_county = {		
+		every_county_province = {
+			limit = { combined_building_level = 0 }
+			set_variable = { name = holding_construction_progress value = 0 }
+		}
+    	random_county_province = {
+    		limit = { 
+    			has_variable = holding_construction_progress 
+    			var:holding_construction_progress = { compare_value < holding_construction_progress_max }
+    		}
+    		county = { set_variable = { name = expansion_target value = prev } }
+    	}
 	}
 	every_county = {
 		remove_variable = tax_rate_changed
