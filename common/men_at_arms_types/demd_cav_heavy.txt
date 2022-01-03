@@ -222,6 +222,7 @@ eastern_heavy_cav = {
 		archers = 1
 	}
 
+	terrain_bonus = {
 		farmlands = { damage = 5 pursuit = 5 screen = 5 }
 		plains = { damage = 5 pursuit = 5 screen = 5 }
 		drylands = { damage = 5 pursuit = 5 screen = 5 }

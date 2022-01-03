@@ -1,0 +1,42 @@
+﻿#############################################
+# DEMD Population System
+# by Vertimnus
+# This file was compiled by a machine from jomini metascript source code.
+# It should never be manually edited.
+#############################################
+
+setEdicts = {
+	if = {
+		limit = { 
+			county.county_opinion < -15	
+			var:manpower_rate = { compare_value < prev.var:tax_rate }
+			NOT = { has_variable = tax_rate_changed }
+		}
+		demd_decrement_tax_rate = yes
+	}
+	else_if = {
+		limit = { 
+			county.county_opinion > 15	
+			var:manpower_rate = { compare_value >= prev.var:tax_rate }
+			NOT = { has_variable = tax_rate_changed }
+		}
+		demd_increment_tax_rate = yes
+	}
+	if = {
+		limit = {
+			county.county_opinion < -15	
+			var:manpower_rate = { compare_value >= prev.var:tax_rate }
+			NOT = { has_variable = manpower_changed }
+		}
+		demd_decrement_manpower_rate = yes
+	}
+	else_if = {
+		limit = {
+			county.county_opinion > 15	
+			var:manpower_rate = { compare_value < prev.var:tax_rate }
+			NOT = { has_variable = manpower_changed }
+		}
+		demd_increment_manpower_rate = yes
+	}
+}
+

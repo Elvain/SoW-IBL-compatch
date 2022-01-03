@@ -1,0 +1,414 @@
+﻿#############################################
+# DEMD Population System
+# by Vertimnus
+# Do not edit without making corresponding edits to the metascript source code. Bad things will happen!
+#############################################
+
+demd_prov_terrain_food_districts_total = {
+	value = var:sqrt_pixels
+	multiply = demd_prov_terrain_food_districts_scale_factor
+	multiply = {
+		value = 1
+		add = demd_prov_terrain_food_districts_mult
+		add = demd_prov_water_food_districts_mult
+		add = demd_prov_winter_food_districts_mult
+	}
+	if = {
+		limit = {
+			county.var:trade_node = { has_variable = food_districts_scale_factor }
+		}
+		multiply = { # node scale factor mult done separately 
+			value = 1
+			add = county.var:trade_node.var:food_districts_scale_factor
+		}
+	}
+	min = 1
+}
+
+demd_prov_terrain_food_districts_scale_factor = 0.45
+
+demd_prov_terrain_food_districts_mult = {
+	value = 0
+	if = {
+		limit = { terrain = floodplains }
+		add = 1.5
+	}
+	else_if = {
+		limit = { terrain = farmlands }
+		add = 1.0
+	}
+	else_if = {
+		limit = { terrain = plains }
+		add = 0.8
+	}
+	else_if = {
+		limit = { terrain = drylands }
+		add = 0.8
+	}
+	else_if = {
+		limit = { terrain = forest }
+		add = 0.6
+	}	
+	else_if = {
+		limit = { terrain = oasis }
+		add = 0.4
+	}
+	else_if = {
+		limit = { terrain = hills }
+		add = 0.2
+	}
+	else_if = {
+		limit = { terrain = savanna }
+		add = 0.2
+	}
+	else_if = {
+		limit = { terrain = steppe }
+		add = 0.0
+	}		
+	else_if = {
+		limit = { terrain = mountains }
+		add = 0
+	}
+	else_if = {
+		limit = { terrain = wetlands }
+		add = 0
+	}	
+	else_if = {
+		limit = { terrain = jungle }
+		add = -0.2
+	}		
+	else_if = {
+		limit = { terrain = dry_hills }
+		add = -0.2
+	}		
+	else_if = {
+		limit = { terrain = taiga }
+		add = -0.4
+	}
+	else_if = {
+		limit = { terrain = high_boreal }
+		add = -0.5
+	}		
+	else_if = {
+		limit = { terrain = desert }
+		add = -0.6
+	}
+	else_if = {
+		limit = { terrain = desert_mountains }
+		add = -0.8
+	}
+}
+
+demd_prov_winter_food_districts_mult = {
+	value = 0
+	add = {
+		value = var:winter_severity_bias
+		multiply = -1
+		add = 1
+		multiply = 0.2
+	}
+}
+
+demd_prov_water_food_districts_mult = {
+	value = 0
+	if = {
+		limit = { is_coastal = yes }
+		add = 0.3 
+	}
+	else_if = {
+		limit = { has_variable = isOnMajorRiver }
+		add = 0.3
+	}
+	else_if = {
+		limit = { has_variable = isOnMinorRiver }
+		add = 0.2
+	}
+	else_if = {
+		limit = { has_variable = isOnLake }
+		add = 0.2
+	}
+}
+
+#############################################
+
+demd_prov_terrain_fertility_total = {
+	value = demd_prov_terrain_fertility_bonus
+	add = demd_prov_winter_fertility_bonus
+	add = demd_prov_water_fertility_bonus
+}
+
+###
+
+demd_prov_winter_fertility_bonus = {
+	value = 0
+	add = {
+		value = var:winter_severity_bias
+		multiply = -1
+		add = 1
+		multiply = 0.1
+	}
+}
+
+###
+
+demd_prov_water_fertility_bonus = {
+	value = 0
+	if = {
+		limit = { has_variable = isOnMajorRiver }
+		add = 0.15
+	}
+	else_if = {
+		limit = { has_variable = isOnMinorRiver }
+		add = 0.12
+	}
+	else_if = {
+		limit = { has_variable = isOnLake }
+		add = 0.1
+	}
+	else_if = {
+		limit = { is_coastal = yes }
+		add = 0.05
+	}
+}
+
+###
+
+demd_prov_terrain_fertility_bonus = {
+	if = {
+		limit = { terrain = floodplains }
+		value = 0.3
+	}
+	else_if = {
+		limit = { terrain = farmlands }
+		value = 0.28
+	}
+	else_if = {
+		limit = { terrain = oasis }
+		value = 0.28
+	}
+	else_if = {
+		limit = { terrain = plains }
+		value = 0.26
+	}
+	else_if = {
+		limit = { terrain = forest }
+		value = 0.24
+	}
+	else_if = {
+		limit = { terrain = drylands }
+		value = 0.26
+	}
+	else_if = {
+		limit = { terrain = wetlands }
+		value = 0.24
+	}
+	else_if = {
+		limit = { terrain = jungle }
+		value = 0.24
+	}
+	else_if = {
+		limit = { terrain = hills }
+		value = 0.24
+	}
+	else_if = {
+		limit = { terrain = mountains }
+		value = 0.22
+	}
+	else_if = {
+		limit = { terrain = savanna }
+		value = 0.22
+	}
+	else_if = {
+		limit = { terrain = steppe }
+		value = 0.2
+	}
+	else_if = {
+		limit = { terrain = dry_hills }
+		value = 0.2
+	}
+	else_if = {
+		limit = { terrain = taiga }
+		value = 0.15
+	}
+	else_if = {
+		limit = { terrain = high_boreal }
+		value = 0.12
+	}
+	else_if = {
+		limit = { terrain = desert }
+		value = 0.05
+	}
+	else_if = {
+		limit = { terrain = desert_mountains }
+		value = 0
+	}	
+	else = {
+		value = 0
+	}
+}
+
+#############################################
+
+demd_prov_sanitation_bonus = {
+	value = 0
+	if = {
+		limit = { has_variable = isOnMajorRiver }
+		add = 0.3 
+	}
+	else_if = {
+		limit = { has_variable = isOnMinorRiver }
+		add = 0.2 
+	}
+	else_if = {
+		limit = { has_variable = isOnLake }
+		add = 0.1
+	}
+	else_if = {
+		limit = { is_coastal = yes }
+		add = 0.1
+	}
+}
+
+#############################################
+
+demd_county_trade_power_bonus = {
+	value = 0 
+	every_in_list = { variable = county_provinces
+		add = demd_prov_trade_power_bonus
+	}
+}
+
+demd_prov_trade_power_bonus = {
+	value = 0
+	if = {
+		limit = { is_coastal = yes }
+		add = 0.5 
+	}
+	if = {
+		limit = { has_variable = isOnMajorRiver }
+		add = 0.5 
+	}
+	else_if = {
+		limit = { has_variable = isOnMinorRiver }
+		add = 0.3
+	}
+	if = {
+		limit = { has_variable = isStraitCrossing }
+		add = 0.2
+	}
+	if = {
+		limit = { has_variable = isMajorRiverCrossing }
+		add = 0.2
+	}
+}
+
+#############################################
+
+demd_prov_total_fort_level_bonus = {
+	value = demd_prov_terrain_fort_level_bonus
+	add = demd_prov_water_fort_level_bonus
+}
+
+demd_prov_terrain_fort_level_bonus = {
+	value = 0
+	if = {
+		limit = { terrain = forest }
+		add = 1
+	}
+	else_if = {
+		limit = { terrain = jungle }
+		add = 1
+	}
+	else_if = {
+		limit = { terrain = wetlands }
+		add = 1
+	}
+	else_if = {
+		limit = { terrain = hills }
+		add = 2
+	}
+	else_if = {
+		limit = { terrain = dry_hills }
+		add = 2
+	}
+	else_if = {
+		limit = { terrain = high_boreal }
+		add = 2
+	}
+	else_if = {
+		limit = { terrain = mountains }
+		add = 3
+	}
+	else_if = {
+		limit = { terrain = taiga }
+		add = 1
+	}
+	else_if = {
+		limit = { terrain = desert_mountains }
+		add = 3
+	}
+}
+
+demd_prov_water_fort_level_bonus = {
+	value = 0
+	if = {
+		limit = { 
+			OR = {
+				has_variable = isOnMajorRiver
+				has_variable = isOnMinorRiver
+			}
+		}
+		add = 1 
+	}
+}
+
+#############################################
+
+demd_county_terrain_conversion_defense_mult = {
+	value = 0
+	every_in_list = { variable = county_provinces
+		add = demd_prov_terrain_conversion_defense_mult
+	}
+	divide = var:num_provinces
+	multiply = -1
+}
+
+demd_prov_terrain_conversion_defense_mult = {
+	value = 0
+	if = {
+		limit = { terrain = forest }
+		add = 0.1
+	}	
+	else_if = {
+		limit = { terrain = steppe }
+		add = 0.1
+	}	
+	else_if = {
+		limit = { terrain = hills }
+		add = 0.2
+	}
+	else_if = {
+		limit = { terrain = wetlands }
+		add = 0.2
+	}
+	else_if = {
+		limit = { terrain = mountains }
+		add = 0.4
+	}
+	else_if = {
+		limit = { terrain = jungle }
+		add = 0.2
+	}		
+	else_if = {
+		limit = { terrain = taiga }
+		add = 0.2
+	}
+	else_if = {
+		limit = { terrain = desert }
+		add = 0.2
+	}
+	else_if = {
+		limit = { terrain = desert_mountains }
+		add = 0.4
+	}
+}

@@ -1,0 +1,14 @@
+Features for those used to Sinews of War on vanilla map
+
+3 additional terrain types offering more strategic depth to
+- nordic highlands (Boreal highlands present from Iceland to Siberia)
+- hills of Asia, Middle East and Africa (Arid hills)
+- savanna of the African Sahel
+
+Remarkably decreased previously existing overpopulation of certain areas such as:
+- Tibet
+- Scandinavia
+- Iceland
+- Sottish Highlands
+
+More detailed map of much of sub-Saharan Africa, Egypt, Bohemia and northern Hungary
