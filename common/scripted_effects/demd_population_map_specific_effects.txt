@@ -214,6 +214,27 @@ demd_set_up_trade_node_network = {
     add_to_global_variable_list = { name = trade_nodes target = title:k_asturias }
 	
 	### Fold Castille, Leon, and Navarra into Asturias
+	title:d_avila = {
+        every_in_de_jure_hierarchy = {
+            limit = { tier = tier_county }
+            title:k_asturias = { add_to_variable_list = { name = node_counties target = prev } }
+			set_variable = { name = trade_node value = title:k_asturias }
+		}
+	}
+	title:d_urgell = {
+        every_in_de_jure_hierarchy = {
+            limit = { tier = tier_county }
+            title:k_asturias = { add_to_variable_list = { name = node_counties target = prev } }
+			set_variable = { name = trade_node value = title:k_asturias }
+		}
+	}
+	title:d_leon = {
+        every_in_de_jure_hierarchy = {
+            limit = { tier = tier_county }
+            title:k_asturias = { add_to_variable_list = { name = node_counties target = prev } }
+			set_variable = { name = trade_node value = title:k_asturias }
+		}
+	}
 	title:d_castilla = {
         every_in_de_jure_hierarchy = {
             limit = { tier = tier_county }
