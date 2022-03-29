@@ -4,28 +4,45 @@
 # Do not edit without making corresponding edits to the metascript source code. Bad things will happen!
 #############################################
 
-demd_prov_terrain_food_districts_total = {
-	value = var:sqrt_pixels
-	multiply = demd_prov_terrain_food_districts_scale_factor
-	multiply = {
-		value = 1
-		add = demd_prov_terrain_food_districts_mult
-		add = demd_prov_water_food_districts_mult
-		add = demd_prov_winter_food_districts_mult
+food_districts_province = {
+	value = {
+		value = food_districts_province_base
+		desc = "From [barony|E] size"
 	}
-	if = {
-		limit = {
-			county.var:trade_node = { has_variable = food_districts_scale_factor }
-		}
-		multiply = { # node scale factor mult done separately 
-			value = 1
-			add = county.var:trade_node.var:food_districts_scale_factor
-		}
+	add = {
+		value = food_districts_province_terrain
+		desc = "From [terrain|E]"
 	}
-	min = 1
+	add = {
+		value = food_districts_province_water
+		desc = "From adjacent water sources"
+	}
+	add = {
+		value = food_districts_province_winter
+		desc = "From [winter|E] severity"
+	}
+	# min = 1
 }
 
-demd_prov_terrain_food_districts_scale_factor = 0.45
+food_districts_province_base = {
+	value = var:sqrt_pixels
+	multiply = 0.45
+}
+
+food_districts_province_terrain = {
+	value = food_districts_province_base
+	multiply = demd_prov_terrain_food_districts_mult
+}
+
+food_districts_province_water = {
+	value = food_districts_province_base
+	multiply = demd_prov_winter_food_districts_mult
+}
+
+food_districts_province_winter = {
+	value = food_districts_province_base
+	multiply = demd_prov_winter_fertility_bonus
+}
 
 demd_prov_terrain_food_districts_mult = {
 	value = 0
@@ -116,7 +133,7 @@ demd_prov_water_food_districts_mult = {
 		add = 0.3 
 	}
 	else_if = {
-		limit = { has_variable = isOnMajorRiver }
+		limit = { is_riverside_province = yes }
 		add = 0.3
 	}
 	else_if = {
@@ -154,7 +171,7 @@ demd_prov_winter_fertility_bonus = {
 demd_prov_water_fertility_bonus = {
 	value = 0
 	if = {
-		limit = { has_variable = isOnMajorRiver }
+		limit = { is_riverside_province = yes }
 		add = 0.15
 	}
 	else_if = {
@@ -252,7 +269,7 @@ demd_prov_terrain_fertility_bonus = {
 demd_prov_sanitation_bonus = {
 	value = 0
 	if = {
-		limit = { has_variable = isOnMajorRiver }
+		limit = { is_riverside_province = yes }
 		add = 0.3 
 	}
 	else_if = {
@@ -273,7 +290,7 @@ demd_prov_sanitation_bonus = {
 
 demd_county_trade_power_bonus = {
 	value = 0 
-	every_in_list = { variable = county_provinces
+	every_county_province = {
 		add = demd_prov_trade_power_bonus
 	}
 }
@@ -285,7 +302,7 @@ demd_prov_trade_power_bonus = {
 		add = 0.5 
 	}
 	if = {
-		limit = { has_variable = isOnMajorRiver }
+		limit = { is_riverside_province = yes }
 		add = 0.5 
 	}
 	else_if = {
@@ -304,69 +321,9 @@ demd_prov_trade_power_bonus = {
 
 #############################################
 
-demd_prov_total_fort_level_bonus = {
-	value = demd_prov_terrain_fort_level_bonus
-	add = demd_prov_water_fort_level_bonus
-}
-
-demd_prov_terrain_fort_level_bonus = {
-	value = 0
-	if = {
-		limit = { terrain = forest }
-		add = 1
-	}
-	else_if = {
-		limit = { terrain = jungle }
-		add = 1
-	}
-	else_if = {
-		limit = { terrain = wetlands }
-		add = 1
-	}
-	else_if = {
-		limit = { terrain = hills }
-		add = 2
-	}
-	else_if = {
-		limit = { terrain = dry_hills }
-		add = 2
-	}
-	else_if = {
-		limit = { terrain = high_boreal }
-		add = 2
-	}
-	else_if = {
-		limit = { terrain = mountains }
-		add = 3
-	}
-	else_if = {
-		limit = { terrain = taiga }
-		add = 1
-	}
-	else_if = {
-		limit = { terrain = desert_mountains }
-		add = 3
-	}
-}
-
-demd_prov_water_fort_level_bonus = {
-	value = 0
-	if = {
-		limit = { 
-			OR = {
-				has_variable = isOnMajorRiver
-				has_variable = isOnMinorRiver
-			}
-		}
-		add = 1 
-	}
-}
-
-#############################################
-
 demd_county_terrain_conversion_defense_mult = {
 	value = 0
-	every_in_list = { variable = county_provinces
+	every_county_province = {
 		add = demd_prov_terrain_conversion_defense_mult
 	}
 	divide = var:num_provinces
