@@ -8,4 +8,4 @@ tags={
 	"Graphics"
 }
 name="IBL-SoW-compatch"
-supported_version="1.4.4"
+supported_version="1.6.*"

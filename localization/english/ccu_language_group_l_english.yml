@@ -20,7 +20,6 @@ culture_parameter_language_group_germanic:0 "#P +[EmptyScope.ScriptValue('same_l
 culture_parameter_language_group_hellenic:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Hellenic [language_group|E]"
 culture_parameter_language_group_indo_aryan:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Indo-Aryan [language_group|E]"
 culture_parameter_language_group_indo_iranian:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Indo-Iranian [language_group|E]"
-culture_parameter_language_group_iranian:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Iranian [language_group|E]"
 culture_parameter_language_group_karto_zan:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Karto-Zan [language_group|E]"
 culture_parameter_language_group_kru:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Kru [language_group|E]"
 culture_parameter_language_group_lezgic:0 "#P +[EmptyScope.ScriptValue('same_language_group_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the Lezgic [language_group|E]"

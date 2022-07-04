@@ -73,7 +73,6 @@ ccu_dummy = {
 		if = { limit = { var:temp = flag:hellenic } }
 		if = { limit = { var:temp = flag:indo_aryan } }
 		if = { limit = { var:temp = flag:indo_iranian } }
-		if = { limit = { var:temp = flag:iranian } }
 		if = { limit = { var:temp = flag:karto_zan } }
 		if = { limit = { var:temp = flag:kru } }
 		if = { limit = { var:temp = flag:lezgic } }

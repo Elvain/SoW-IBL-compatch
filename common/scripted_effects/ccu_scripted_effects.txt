@@ -69,7 +69,6 @@ ccu_initialize_language_group = {
 	else_if = { limit = { has_cultural_parameter = language_group_hellenic } set_variable = { name = language_group value = flag:hellenic } }
 	else_if = { limit = { has_cultural_parameter = language_group_indo_aryan } set_variable = { name = language_group value = flag:indo_aryan } }
 	else_if = { limit = { has_cultural_parameter = language_group_indo_iranian } set_variable = { name = language_group value = flag:indo_iranian } }
-	else_if = { limit = { has_cultural_parameter = language_group_iranian } set_variable = { name = language_group value = flag:iranian } }
 	else_if = { limit = { has_cultural_parameter = language_group_karto_zan } set_variable = { name = language_group value = flag:karto_zan } }
 	else_if = { limit = { has_cultural_parameter = language_group_kru } set_variable = { name = language_group value = flag:kru } }
 	else_if = { limit = { has_cultural_parameter = language_group_lezgic } set_variable = { name = language_group value = flag:lezgic } }
