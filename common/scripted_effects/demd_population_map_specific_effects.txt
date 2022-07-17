@@ -7,43 +7,46 @@
 demd_preprocess_map = { # 5 traditions
 	title:c_rothenburg.holder = { get_title = title:b_freising } 
 	culture:anglo_saxon = { # 4 traditions
-		add_culture_tradition = tradition_stand_and_fight
+		add_culture_tradition = tradition_stalwart_defenders
 		remove_variable = tradition_cooldown
+		if = { limit = { NOT = { has_innovation = innovation_motte } } add_innovation = innovation_motte }
 	}
 	culture:franconian = { 
 		remove_culture_tradition = tradition_castle_keepers
 		add_culture_tradition = tradition_ruling_caste
 		add_culture_tradition = tradition_warrior_bishops 
 		remove_variable = tradition_cooldown
+		if = { limit = { NOT = { has_innovation = innovation_motte } } add_innovation = innovation_motte }
 	}
 	culture:saxon = { # 4 traditions
 		remove_culture_tradition = tradition_stand_and_fight
 		add_culture_tradition = tradition_ottonian_reforms
-		add_culture_tradition = tradition_warrior_bishops
-	
+		add_culture_tradition = tradition_warrior_bishops	
 		remove_variable = tradition_cooldown
+		if = { limit = { NOT = { has_innovation = innovation_motte } } add_innovation = innovation_motte }
 	}	
 	culture:bavarian = { # 5 traditions
 		remove_culture_tradition = tradition_stand_and_fight
 		add_culture_tradition = tradition_ottonian_reforms
 		add_culture_tradition = tradition_warrior_bishops 
 		remove_variable = tradition_cooldown
+		if = { limit = { NOT = { has_innovation = innovation_motte } } add_innovation = innovation_motte }	
 	}	
 	culture:swabian = { # 4 traditions
 		add_culture_tradition = tradition_warrior_bishops 
 		remove_variable = tradition_cooldown
+		if = { limit = { NOT = { has_innovation = innovation_motte } } add_innovation = innovation_motte }
 	}
 	culture:cisalpine = { # 5 traditions
-		add_culture_tradition = tradition_city_keepers
 		add_culture_tradition = tradition_metal_craftsmanship
 		remove_variable = tradition_cooldown
+		if = { limit = { NOT = { has_innovation = innovation_motte } } add_innovation = innovation_motte }
 	}
 	culture:italian = { # 5 traditions
-		add_culture_tradition = tradition_city_keepers
-		add_culture_tradition = tradition_legalistic
 		remove_variable = tradition_cooldown
 	}
-	
+
+    
 	# Give it to everyone by default
 	every_religion_global = {
 		every_faith = { 
@@ -53,7 +56,12 @@ demd_preprocess_map = { # 5 traditions
 }
 
 demd_postprocess_map = {
-	
+	title:e_byzantium = { 
+		if = { limit = { current_year < 1000 }
+			set_variable = { name = imperial_decay value = 650 } 
+		}
+		else = { set_variable = { name = imperial_decay value = 800 } }
+	}
 }
 
 ##############################################################
@@ -66,7 +74,24 @@ demd_set_ancestral_faiths = {
 ##############################################################
 
 
-
+demd_add_special_buildings = {
+	# Episcopal Fortress Cities
+	province:2943 = { add_special_building = demd_walls_of_freising_01 }
+	province:2960 = { add_special_building = demd_walls_of_passau_01 }
+	province:2964 = { add_special_building = demd_walls_of_regensburg_01 }
+	province:2878 = { add_special_building = demd_walls_of_eichstatt_01 }
+	province:2975 = { add_special_building = demd_walls_of_salzburg_01 }
+	province:2778 = { add_special_building = demd_walls_of_augsburg_01 }
+	
+	# Other Fortifications
+	province:3086 = { add_special_building_slot = demd_walls_of_vienna_01 }
+	province:3117 = { add_special_building = demd_schlossberg_01 }
+	province:3131 = { 
+		if = { limit = { current_year > 1000 } add_special_building = demd_ennsburg_01 }
+		else = { add_special_building_slot = demd_ennsburg_01 }
+	}
+	province:2877 = { add_special_building_slot = demd_nuremberg_castle_01 }
+}
 
 ##############################################################
 
@@ -987,7 +1012,16 @@ demd_manual_pop_placements = {
 	demd_fill_with_holdings = { TITLE = d_tunis PERCENT = 100 }
 	demd_fill_with_holdings = { TITLE = e_france PERCENT = 100 }
 	demd_fill_with_holdings = { TITLE = e_spain PERCENT = 100 }
-	demd_fill_with_holdings = { TITLE = e_germany PERCENT = 100 }
+	
+	demd_fill_with_holdings = { TITLE = k_east_francia PERCENT = 100 } 
+	demd_fill_with_holdings = { TITLE = k_lotharingia PERCENT = 100 }
+	demd_fill_with_holdings = { TITLE = k_frisia PERCENT = 100 }
+	demd_fill_with_holdings = { TITLE = d_nordgau PERCENT = 100 }
+	demd_fill_with_holdings = { TITLE = d_augsburg PERCENT = 100 }
+	demd_fill_with_holdings = { TITLE = d_nordgau PERCENT = 100 }
+	demd_fill_with_holdings = { TITLE = d_salzburg PERCENT = 100 }
+	demd_fill_with_holdings = { TITLE = d_bavaria PERCENT = 100 }
+	
 	demd_fill_with_holdings = { TITLE = e_italy PERCENT = 100 }
 	demd_fill_with_holdings = { TITLE = e_byzantium PERCENT = 100 }
 	demd_fill_with_holdings = { TITLE = e_hre PERCENT = 100 }
@@ -1001,15 +1035,13 @@ demd_manual_pop_placements = {
 demd_fill_with_holdings = {
 	title:$TITLE$ = {
 		every_in_de_jure_hierarchy = {
-			limit = { tier = tier_county }
+			limit = { 
+				tier = tier_county 
+				NOT = { title_province = { has_holding_type = tribal_holding } }
+				NOT = { faith = { has_doctrine = unreformed_faith_doctrine } }
+			}
 			every_county_province = {
-				limit = { 
-					NOR = { 
-						county.title_province = this 
-						county.title_province = { has_holding_type = tribal_holding }
-						has_holding = yes
-					}					
-				}
+				limit = { has_holding = no }
 				random_list = {
 					0 = {
 						modifier = {
