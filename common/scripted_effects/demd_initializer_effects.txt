@@ -3586,9 +3586,9 @@ initialize_province_variables = {
 	# add_to_global_variable_list = { name = eligible_counties_group_m_23 target = title:c_severin }
 	add_to_global_variable_list = { name = eligible_counties_group_y_98 target = title:c_severin }
 	add_to_global_variable_list = { name = eligible_counties_all target = title:c_severin }
-	# add_to_global_variable_list = { name = eligible_counties_group_m_24 target = title:c_rosello }
-	add_to_global_variable_list = { name = eligible_counties_group_y_99 target = title:c_rosello }
-	add_to_global_variable_list = { name = eligible_counties_all target = title:c_rosello }
+	# add_to_global_variable_list = { name = eligible_counties_group_m_24 target = title:c_rossello }
+	add_to_global_variable_list = { name = eligible_counties_group_y_99 target = title:c_rossello }
+	add_to_global_variable_list = { name = eligible_counties_all target = title:c_rossello }
 	# add_to_global_variable_list = { name = eligible_counties_group_m_25 target = title:c_tambov }
 	add_to_global_variable_list = { name = eligible_counties_group_y_100 target = title:c_tambov }
 	add_to_global_variable_list = { name = eligible_counties_all target = title:c_tambov }
@@ -8245,7 +8245,7 @@ initialize_province_variables = {
 	}
 
 	title:c_campulung = {
-		set_variable = { name = id value = 5009 }
+		set_variable = { name = id value = 515 }
 	}
 
 	title:c_galati = {
@@ -10492,7 +10492,7 @@ initialize_province_variables = {
 		set_variable = { name = id value = 516 }
 	}
 
-	title:c_rosello = {
+	title:c_rossello = {
 		set_variable = { name = id value = 8798 }
 	}
 
@@ -13609,7 +13609,7 @@ initialize_province_variables = {
 	}
 
 	title:c_santiago = {
-		set_variable = { name = id value = 1791 }
+		set_variable = { name = id value = 1785 }
 	}
 
 	title:c_dibri = {
@@ -41349,7 +41349,7 @@ initialize_province_variables = {
 		set_variable = { name = sqrt_pixels value = 19.40 } # sqrt pixels 28.11
 	}
 
-	province:5009 = { # Campulung
+	province:515 = { # Campulung
 		set_variable = isOnMinorRiver
 		county = { set_variable = isOnMinorRiver }
 		set_variable = { name = winter_severity_bias value = 0.70 }
